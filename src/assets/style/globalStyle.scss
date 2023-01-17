@@ -1,0 +1,52 @@
+@import 'normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Manrope&family=Mulish&family=Nunito+Sans&family=Roboto+Flex:opsz,wght@8..144,300&family=Roboto:wght@300&family=Source+Sans+Pro&display=swap');
+
+:root {
+  --background-content-color: #131313;
+  --hover-background-color: #15181a;
+  --breadcrumb-background-color: #040404;
+  --footer-background-color: #040404;
+  --border-regular: #919191;
+  --header-height: 60px;
+  --sider-width: 250px;
+  --text-color: #ffff;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  font-size: 10px;
+  color: #ffffff;
+}
+
+*,
+*:before,
+*:after {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+body {
+  line-height: 1.43;
+  font-size: 1.6rem;
+  font-family: 'Mulish', sans-serif;
+  text-rendering: optimizeSpeed;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: #ffffff;
+  margin: 0px;
+}
+
+.ant-menu-item:hover {
+  background-color: var(--hover-background-color) !important;
+}
+
+.ant-menu-item-selected {
+  background-color: var(--hover-background-color) !important;
+}
