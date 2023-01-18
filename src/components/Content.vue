@@ -20,7 +20,7 @@
       style="
         padding: 15px 30px;
         background-color: var(--background-content-color);
-        height: 100vh;
+        min-height: 100vh;
       "
     >
       <slot />

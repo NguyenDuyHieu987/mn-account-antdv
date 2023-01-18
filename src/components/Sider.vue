@@ -51,6 +51,7 @@ export default {
   },
 };
 </script>
+
 <style lang="scss">
 .ant-list-split .ant-list-header {
   border-bottom: 1px solid var(--border-regular);
@@ -65,6 +66,9 @@ export default {
 .ant-layout-sider-children {
   min-height: 100%;
   overflow-y: scroll;
+  .ant-spin-container {
+    margin-bottom: 30px;
+  }
 }
 
 .ant-list-header {
@@ -82,7 +86,14 @@ export default {
   display: none;
 }
 
-.ant-spin-container {
-  margin-bottom: 30px;
+.user-name-container {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  background-color: #092b4b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid gray;
 }
 </style>

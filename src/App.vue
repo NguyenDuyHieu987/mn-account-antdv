@@ -1,6 +1,6 @@
 <template>
   <component :is="layout">
-    <main id="main"><router-view /></main>
+    <router-view />
   </component>
 </template>
 
@@ -40,7 +40,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-#main {
-}
-</style>
+<style lang="scss"></style>
