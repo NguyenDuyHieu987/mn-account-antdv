@@ -204,6 +204,7 @@ export default defineComponent({
         onClick: (e) => {
           // store.dispatch('getDetailAccount', { id: record.id });
           if (e.target.closest('.ant-dropdown-link.ant-dropdown-trigger')) {
+            console.log(toRaw(record));
             store.state.detailAccount = toRaw(record);
             account.value = toRaw(record);
             store.state.loadingDetailAccount = true;
