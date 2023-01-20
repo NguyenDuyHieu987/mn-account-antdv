@@ -231,10 +231,6 @@ export default {
     margin-left: 3px;
   }
 
-  .ant-menu-item:last-child {
-    margin-bottom: 30px;
-  }
-
   .ant-menu-submenu {
     .ant-menu-item {
       padding-left: 24px;
@@ -271,5 +267,9 @@ export default {
   .title-trigger-collapse {
     opacity: 0;
   }
+}
+
+.ant-menu-title-content {
+  user-select: none;
 }
 </style>

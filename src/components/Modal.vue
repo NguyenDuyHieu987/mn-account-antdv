@@ -93,28 +93,28 @@
       "
     >
       <a-form-item label="Full name">
-        <span>{{ $store.state.detailAccount.name }} </span>
+        <span>{{ $store.state.detailAccountData.name }} </span>
       </a-form-item>
       <a-form-item label="Phone">
-        <span>{{ $store.state.detailAccount.phone }} </span>
+        <span>{{ $store.state.detailAccountData.phone }} </span>
       </a-form-item>
       <a-form-item label="Iban">
-        <span>{{ $store.state.detailAccount.iban }} </span>
+        <span>{{ $store.state.detailAccountData.iban }} </span>
       </a-form-item>
       <a-form-item label="Pin">
-        <span>{{ $store.state.detailAccount.pin }} </span>
+        <span>{{ $store.state.detailAccountData.pin }} </span>
       </a-form-item>
       <a-form-item label="Address">
-        <span>{{ $store.state.detailAccount.address }} </span>
+        <span>{{ $store.state.detailAccountData.address }} </span>
       </a-form-item>
       <a-form-item label="Balance">
-        <span>{{ $store.state.detailAccount.balance }} </span>
+        <span>{{ $store.state.detailAccountData.balance }} </span>
       </a-form-item>
       <a-form-item label="Email">
-        <span>{{ $store.state.detailAccount.email }} </span>
+        <span>{{ $store.state.detailAccountData.email }} </span>
       </a-form-item>
       <a-form-item label="Date">
-        <span>{{ $store.state.detailAccount.date }} </span>
+        <span>{{ $store.state.detailAccountData.date }} </span>
       </a-form-item>
     </a-form>
 
@@ -144,35 +144,53 @@
   </a-modal>
 </template>
 <script>
-import { defineComponent, ref, reactive, toRaw } from 'vue';
+import {
+  defineComponent,
+  ref,
+  reactive,
+  toRaw,
+  computed,
+  watchEffect,
+} from 'vue';
 import { useStore } from 'vuex';
 import { Form } from 'ant-design-vue';
 import axios from 'axios';
 const useForm = Form.useForm;
 
 export default defineComponent({
-  props: {
-    account: Object,
-  },
+  props: {},
   setup() {
     const store = useStore();
     const loading = ref(false);
 
-    let modelRef = reactive({
-      name: '',
-      phone: '',
-      iban: '',
-      pin: '',
-      address: '',
-      balance: '',
-      email: '',
-      date: '',
+    // let modelRef = reactive({
+    //   id: '';
+    //   name: '',
+    //   phone: '',
+    //   iban: '',
+    //   pin: '',
+    //   address: '',
+    //   balance: '',
+    //   email: '',
+    //   date: '',
+    // });
+
+    const modalAction = computed(() => store.state.modalAction);
+
+    const modelRef = computed(() => store.getters.detailAccountData);
+
+    watchEffect(() => {
+      if (modalAction.value == 'add') {
+        reset();
+      }
     });
 
-    if (store.state.modalAction == 'edit') {
-      // modelRef = account;
-      modelRef = store.state.detailAccount;
-    }
+    // watch(store.state.detailAccount, (newVal) => {
+    //   if (store.state.modalAction == 'edit') {
+    //     // modelRef = account;
+    //     modelRef = newVal;
+    //   }
+    // });
 
     const formItemLayout = {
       labelCol: {
@@ -300,11 +318,10 @@ export default defineComponent({
             case 'add':
               break;
             case 'edit':
-              // toRaw(modelRef)['id'] = props.idAccount;
               axios
                 .post(
                   `${process.env.VUE_APP_SERVICE_URL}/account/updateaccount`,
-                  toRaw(modelRef)
+                  toRaw(modelRef).value
                 )
                 .then((response) => {
                   if (response.data.success) {
@@ -321,13 +338,12 @@ export default defineComponent({
               break;
           }
 
-          console.log(toRaw(modelRef));
-          store.dispatch('getListAccount');
           setTimeout(() => {
             loading.value = false;
             store.state.modalVisible = false;
+            store.dispatch('getListAccount');
+            reset();
           }, 2000);
-          reset();
         })
         .catch((err) => {
           console.log('error', err);
@@ -388,6 +404,21 @@ export default defineComponent({
 //     color: #ffff;
 //   }
 // }
+
+.ant-modal-body {
+  max-height: 70vh;
+  overflow-y: scroll;
+}
+
+.ant-modal-body::-webkit-scrollbar {
+  width: 10px;
+}
+
+.ant-modal-body::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: #acacac;
+  // display: none;
+}
 
 .ant-col-xs-24.ant-form-item-label {
   flex: 0 0 20%;

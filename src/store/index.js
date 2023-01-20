@@ -15,21 +15,11 @@ const store = createStore({
       },
       listAccount: [],
       numberOfAccount: 0,
-      activeSideBar: true,
       showAddMessage: false,
       showUpdateMessage: false,
       showRemoveMessage: false,
       failedMessage: false,
-      detailAccount: {
-        name: '',
-        phone: '',
-        iban: '',
-        pin: '',
-        address: '',
-        balance: '',
-        email: '',
-        date: '',
-      },
+      detailAccountData: {},
       requestAddAccount: {
         id: '',
         name: '',
@@ -58,14 +48,11 @@ const store = createStore({
     };
   },
   mutations: {
-    setActiveSideBar(state) {
-      state.activeSideBar = !state.activeSideBar;
-    },
     setListAccount(state, dataAccount) {
       state.listAccount = dataAccount;
     },
-    setDetailAccount(state, dataAccount) {
-      state.detailAccount = dataAccount;
+    setDetailAccountData(state, dataAccount) {
+      state.detailAccountData = dataAccount;
     },
     setNumberOfAccount(state, numberOfAccount) {
       state.numberOfAccount = numberOfAccount;
@@ -79,6 +66,9 @@ const store = createStore({
       return state.listMovie.filter(
         (mov) => mov.release_date.slice(0, 4) == inputVal
       );
+    },
+    detailAccountData(state) {
+      return state.detailAccountData;
     },
   },
   actions: {
@@ -96,19 +86,8 @@ const store = createStore({
       state.loadingTable = false;
     },
 
-    async getDetailAccount({ commit, state }, { id }) {
-      state.loadingDetailAccount = true;
-      const dataAccount = await axios
-        .get(
-          `${process.env.VUE_APP_SERVICE_URL}/account/getdetailaccount?id=${id}`
-        )
-        .then((accountResponse) => accountResponse.data);
-
-      commit('setDetailAccount', dataAccount);
-
-      setTimeout(() => {
-        state.loadingDetailAccount = false;
-      }, 2000);
+    async setDetailAccount({ commit }, { dataAccount }) {
+      commit('setDetailAccountData', dataAccount);
     },
 
     async searchAccount(

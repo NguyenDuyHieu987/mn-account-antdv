@@ -37,4 +37,15 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.body-content {
+  margin-left: 250px;
+  min-height: calc(100vh - var(--header-height));
+  margin-top: var(--header-height);
+  transition: all 0.2s;
+}
+
+.body-content.expand {
+  margin-left: var(--sider-collapsed-width);
+}
+</style>

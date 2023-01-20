@@ -1,5 +1,5 @@
 <template>
-  <a-layout-content style="height: calc(100vh - 129px)">
+  <a-layout-content>
     <a-breadcrumb
       style="
         padding: 15px 30px;
@@ -30,10 +30,6 @@
 </template>
 
 <style lang="scss">
-.ant-menu-title-content {
-  user-select: none;
-}
-
 // .ant-breadcrumb span a {
 //   color: #c9c9c9;
 // }
@@ -41,15 +37,4 @@
 // .ant-breadcrumb span:last-child a {
 //   color: #fff;
 // }
-
-.body-content {
-  margin-left: 250px;
-  min-height: calc(100vh - var(--header-heigh));
-  margin-top: var(--header-height);
-  transition: all 0.2s;
-}
-
-.body-content.expand {
-  margin-left: var(--sider-collapsed-width);
-}
 </style>

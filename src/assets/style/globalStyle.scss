@@ -103,3 +103,14 @@ h4 {
   border-color: var(--btn-backgroud-color-hover);
   background: var(--btn-backgroud-color-hover);
 }
+
+.ant-table-body::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background: #e8e8e8;
+}
+
+.ant-table-body::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: #acacac;
+}

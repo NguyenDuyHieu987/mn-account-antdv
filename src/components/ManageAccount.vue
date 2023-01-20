@@ -10,6 +10,7 @@
           @click="
             $store.state.modalVisible = true;
             $store.state.modalAction = 'add';
+            $store.dispatch('setDetailAccount', { dataAccount: {} });
           "
         >
           <template #icon>
@@ -26,14 +27,14 @@
       allowClear
       bordered
       @search="onSearch"
-      style="max-width: 600px"
+      style="max-width: 50%"
     />
   </div>
   <div class="manage-account">
     <a-table
       :columns="columns"
       :data-source="listAccount"
-      :scroll="{ x: 1500, y: '70vh' }"
+      :scroll="{ x: 1500, y: '90vh' }"
       bordered
       :loading="$store.state.loadingTable"
       :customRow="customRow"
@@ -93,7 +94,7 @@
     </a-table>
     <JsxCom />
   </div>
-  <teleport to="body"> <Modal :account="account" /></teleport>
+  <teleport to="body"> <Modal /></teleport>
 </template>
 
 <script>
@@ -104,7 +105,7 @@ import {
   DeleteFilled,
   PlusOutlined,
 } from '@ant-design/icons-vue';
-import { defineComponent, ref, reactive, toRaw } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
 
 import Modal from './Modal.vue';
@@ -191,7 +192,7 @@ export default defineComponent({
         },
       },
     ]);
-    const account = reactive({});
+
     const value = ref('');
 
     const onSearch = (searchValue) => {
@@ -204,9 +205,7 @@ export default defineComponent({
         onClick: (e) => {
           // store.dispatch('getDetailAccount', { id: record.id });
           if (e.target.closest('.ant-dropdown-link.ant-dropdown-trigger')) {
-            console.log(toRaw(record));
-            store.state.detailAccount = toRaw(record);
-            account.value = toRaw(record);
+            store.dispatch('setDetailAccount', { dataAccount: record });
             store.state.loadingDetailAccount = true;
 
             setTimeout(() => {
@@ -222,7 +221,6 @@ export default defineComponent({
       value,
       onSearch,
       customRow,
-      account,
     };
   },
 
@@ -255,6 +253,7 @@ export default defineComponent({
     display: flex;
   }
 }
+
 .ant-table {
   background-color: var(--background-content-color);
   color: #fff;
@@ -314,12 +313,6 @@ export default defineComponent({
   .ant-pagination-item-container
   .ant-pagination-item-ellipsis {
   color: #838383;
-}
-
-.ant-table-cell-fix-left,
-.ant-table-cell-fix-right {
-  background-color: var(--background-content-color);
-  z-index: 1;
 }
 
 .ant-table-cell {
