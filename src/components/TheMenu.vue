@@ -3,6 +3,13 @@
     v-model:openKeys="openKeys"
     v-model:selectedKeys="selectedKeys"
     mode="inline"
+    style="
+      background-image: linear-gradient(
+        to right,
+        var(--sider-header-background-color1),
+        var(--sider-header-background-color2)
+      );
+    "
     theme="dark"
   >
     <a-menu-item key="dashboard">
@@ -96,6 +103,66 @@
       <span>Setting</span>
     </a-menu-item>
     <a-menu-item key="10">
+      <template #icon>
+        <SettingOutlined />
+      </template>
+      <span>Setting</span>
+    </a-menu-item>
+    <a-menu-item key="11">
+      <template #icon>
+        <SettingOutlined />
+      </template>
+      <span>Setting</span>
+    </a-menu-item>
+    <a-menu-item key="12">
+      <template #icon>
+        <SettingOutlined />
+      </template>
+      <span>Setting</span>
+    </a-menu-item>
+    <a-menu-item key="13">
+      <template #icon>
+        <SettingOutlined />
+      </template>
+      <span>Setting</span>
+    </a-menu-item>
+    <a-menu-item key="14">
+      <template #icon>
+        <SettingOutlined />
+      </template>
+      <span>Setting</span>
+    </a-menu-item>
+    <a-menu-item key="15">
+      <template #icon>
+        <SettingOutlined />
+      </template>
+      <span>Setting</span>
+    </a-menu-item>
+    <a-menu-item key="16">
+      <template #icon>
+        <SettingOutlined />
+      </template>
+      <span>Setting</span>
+    </a-menu-item>
+    <a-menu-item key="17">
+      <template #icon>
+        <SettingOutlined />
+      </template>
+      <span>Setting</span>
+    </a-menu-item>
+    <a-menu-item key="18">
+      <template #icon>
+        <SettingOutlined />
+      </template>
+      <span>Setting</span>
+    </a-menu-item>
+    <a-menu-item key="19">
+      <template #icon>
+        <SettingOutlined />
+      </template>
+      <span>Setting</span>
+    </a-menu-item>
+    <a-menu-item key="20">
       <template #icon>
         <SettingOutlined />
       </template>

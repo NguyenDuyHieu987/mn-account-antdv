@@ -2,9 +2,9 @@
   <a-layout-footer
     style="
       text-align: center;
-      background-color: #0000;
-      color: var(--text-color);
+      /* color: var(--text-color); */
       background-color: var(--footer-background-color);
+      border-top: 1px solid var(--border-regular);
     "
   >
     Ant Design ©2018 Created by Ant UED

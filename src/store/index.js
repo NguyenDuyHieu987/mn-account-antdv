@@ -5,6 +5,9 @@ const store = createStore({
   state() {
     return {
       collapsed: false,
+      modalVisible: false,
+      modalAction: '',
+      loadingDetailAccount: false,
       userAccount: {
         fullname: '',
         role: '',
@@ -17,7 +20,16 @@ const store = createStore({
       showUpdateMessage: false,
       showRemoveMessage: false,
       failedMessage: false,
-      detailAccount: null,
+      detailAccount: {
+        name: '',
+        phone: '',
+        iban: '',
+        pin: '',
+        address: '',
+        balance: '',
+        email: '',
+        date: '',
+      },
       requestAddAccount: {
         id: '',
         name: '',
@@ -74,19 +86,18 @@ const store = createStore({
       commit('setActiveSideBar');
     },
 
-    async getListAccount({ commit, state }, { pageAccount, showEntries }) {
+    async getListAccount({ commit, state }) {
       state.loadingTable = true;
       const dataAccount = await axios
-        .get(
-          `${process.env.VUE_APP_SERVICE_URL}/account/getallaccount?page=${pageAccount}&showentries=${showEntries}`
-        )
+        .get(`${process.env.VUE_APP_SERVICE_URL}/account/getallaccount1`)
         .then((accountResponse) => accountResponse.data);
 
       commit('setListAccount', dataAccount);
       state.loadingTable = false;
     },
 
-    async getDetailAccount({ commit }, { id }) {
+    async getDetailAccount({ commit, state }, { id }) {
+      state.loadingDetailAccount = true;
       const dataAccount = await axios
         .get(
           `${process.env.VUE_APP_SERVICE_URL}/account/getdetailaccount?id=${id}`
@@ -94,6 +105,10 @@ const store = createStore({
         .then((accountResponse) => accountResponse.data);
 
       commit('setDetailAccount', dataAccount);
+
+      setTimeout(() => {
+        state.loadingDetailAccount = false;
+      }, 2000);
     },
 
     async searchAccount(
