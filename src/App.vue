@@ -22,11 +22,11 @@ export default {
       if (window.localStorage.getItem('remember') == 'true') {
         if (window.localStorage.getItem('userToken') != null) {
           axios
-            .post(`${process.env.VUE_APP_SERVICE_URL}/auth/keeplogin`, {
+            .post(`${process.env.VUE_APP_SERVICE_URL}/auth/keeplogin1`, {
               usertoken: window.localStorage.getItem('userToken'),
             })
             .then((response) => {
-              if (response.data == '') {
+              if (response.data.length == 0) {
                 notification.open({
                   message: 'Failed!',
                   description: 'Some thing went wrong.',
@@ -36,8 +36,8 @@ export default {
                     }),
                 });
               } else {
-                store.state.userAccount = response.data;
-                router.push({ path: '/' });
+                store.state.userAccount = response.data[0];
+                // router.push({ path: '/' });
               }
             })
             .catch((e) => {

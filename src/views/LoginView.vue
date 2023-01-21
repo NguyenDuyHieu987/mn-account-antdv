@@ -124,9 +124,9 @@ export default defineComponent({
     const handleSubmit = () => {
       loadingLogin.value = true;
       axios
-        .post(`${process.env.VUE_APP_SERVICE_URL}/auth/login`, formState)
+        .post(`${process.env.VUE_APP_SERVICE_URL}/auth/login1`, formState)
         .then((response) => {
-          if (response.data == '') {
+          if (response.data.length == 0) {
             setTimeout(() => {
               loadingLogin.value = false;
               notification.open({
@@ -139,10 +139,13 @@ export default defineComponent({
               });
             }, 1000);
           } else {
-            store.state.userAccount = response.data;
+            store.state.userAccount = response.data[0];
             if (formState.remember) {
               window.localStorage.setItem('remember', formState.remember);
-              window.localStorage.setItem('userToken', response.data.usertoken);
+              window.localStorage.setItem(
+                'userToken',
+                response.data[0].usertoken
+              );
             }
             setTimeout(() => {
               loadingLogin.value = false;
