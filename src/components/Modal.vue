@@ -139,16 +139,35 @@
       <a-button v-else key="back" @click="handleCancel">Close</a-button>
       <!-- style="background-color: var(--background-content-color); color: #ffff" -->
       <a-button
-        key="submit"
+        key="submit-add"
         type="primary"
         :loading="loading"
         @click="handleOk"
         html-type="submit"
-        v-if="$store.state.modalAction != 'detail'"
+        v-if="$store.state.modalAction == 'add'"
       >
-        <span v-if="$store.state.modalAction == 'add'">Add</span>
-        <span v-else-if="$store.state.modalAction == 'edit'">Save</span>
-        <span v-else-if="$store.state.modalAction == 'delete'">Delete</span>
+        <span>Add</span>
+      </a-button>
+      <a-button
+        key="submit-edit"
+        type="primary"
+        :loading="loading"
+        @click="handleOk"
+        html-type="submit"
+        v-else-if="$store.state.modalAction == 'edit'"
+      >
+        <span>Update</span>
+      </a-button>
+      <a-button
+        key="submit-delete"
+        type="primary"
+        :loading="loading"
+        @click="handleOk"
+        html-type="submit"
+        v-else-if="$store.state.modalAction == 'delete'"
+        class="delete-btn"
+      >
+        <span>Delete</span>
       </a-button>
     </template>
   </a-modal>
@@ -511,5 +530,16 @@ export default defineComponent({
 
 .ant-modal-footer {
   padding: 15px;
+}
+
+.ant-btn-primary.delete-btn {
+  background: var(--btn-delete-background-color);
+  border-color: var(--btn-delete-background-color);
+}
+
+.ant-btn-primary.delete-btn:hover,
+.ant-btn-primary.delete-btn:focus {
+  border-color: var(--btn-delete-hover-color);
+  background: var(--btn-delete-hover-color);
 }
 </style>
