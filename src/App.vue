@@ -6,6 +6,7 @@
 
 <script>
 import { computed, onBeforeMount, h } from 'vue';
+import { useStore } from 'vuex';
 import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import { CloseCircleFilled } from '@ant-design/icons-vue';
@@ -13,11 +14,12 @@ import { notification } from 'ant-design-vue';
 
 export default {
   setup() {
+    const store = useStore();
     const router = useRouter();
     const route = useRoute();
 
     onBeforeMount(() => {
-      if (window.localStorage.getItem('remember') == true) {
+      if (window.localStorage.getItem('remember') == 'true') {
         if (window.localStorage.getItem('userToken') != null) {
           axios
             .post(`${process.env.VUE_APP_SERVICE_URL}/auth/keeplogin`, {
@@ -34,11 +36,19 @@ export default {
                     }),
                 });
               } else {
-                this.$store.state.userAccount = response.data;
-                this.$router.push({ path: '/' });
+                store.state.userAccount = response.data;
+                router.push({ path: '/' });
               }
             })
             .catch((e) => {
+              notification.open({
+                message: 'Failed!',
+                description: 'Some thing went wrong.',
+                icon: () =>
+                  h(CloseCircleFilled, {
+                    style: 'color: red',
+                  }),
+              });
               if (axios.isCancel(e)) return;
             });
         }
