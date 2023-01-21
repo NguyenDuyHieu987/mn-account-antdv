@@ -12,6 +12,7 @@
             $store.state.modalAction = 'add';
             $store.dispatch('setDetailAccount', { dataAccount: {} });
           "
+          style="border: none"
         >
           <template #icon>
             <PlusOutlined />
@@ -26,7 +27,9 @@
       size="large"
       allowClear
       bordered
+      :loading="$store.state.loadingSearch"
       @search="onSearch"
+      @change="onChange"
       style="max-width: 50%"
     />
   </div>
@@ -43,7 +46,7 @@
         <a-dropdown
           :trigger="['click']"
           overlayStyle="border: 0.5px solid var(--border-regular);
-          "
+            "
         >
           <a class="ant-dropdown-link" @click.prevent>
             <span>Action</span>
@@ -69,6 +72,7 @@
                   $store.state.modalVisible = true;
                   $store.state.modalAction = 'edit';
                 "
+                v-if="$store.state.userAccount.role == 'admin'"
               >
                 <template #icon>
                   <EditFilled />
@@ -81,6 +85,7 @@
                   $store.state.modalVisible = true;
                   $store.state.modalAction = 'delete';
                 "
+                v-if="$store.state.userAccount.role == 'admin'"
               >
                 <template #icon>
                   <DeleteFilled />
@@ -105,7 +110,7 @@ import {
   DeleteFilled,
   PlusOutlined,
 } from '@ant-design/icons-vue';
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onBeforeMount, computed } from 'vue';
 import { useStore } from 'vuex';
 
 import Modal from './Modal.vue';
@@ -192,12 +197,33 @@ export default defineComponent({
         },
       },
     ]);
-
     const value = ref('');
 
+    const listAccount = computed(() => store.state.listAccount);
+    const numberOfAccount = computed(() => store.state.numberOfAccount);
+
+    onBeforeMount(() => {
+      store.dispatch('getListAccount');
+    });
+
     const onSearch = (searchValue) => {
-      console.log('use value', searchValue);
-      console.log('or use this.value', value.value);
+      if (searchValue.length > 0) {
+        store.dispatch('searchAccount', {
+          textInput: searchValue,
+        });
+      } else if (searchValue.length == 0) {
+        store.dispatch('getListAccount1');
+      }
+    };
+
+    const onChange = () => {
+      if (value.value.length > 0) {
+        store.dispatch('searchAccount', {
+          textInput: value.value,
+        });
+      } else if (value.value.length == 0) {
+        store.dispatch('getListAccount1');
+      }
     };
 
     const customRow = (record) => {
@@ -205,6 +231,7 @@ export default defineComponent({
         onClick: (e) => {
           // store.dispatch('getDetailAccount', { id: record.id });
           if (e.target.closest('.ant-dropdown-link.ant-dropdown-trigger')) {
+            // record['date'] = record.date.slice(0, 10);
             store.dispatch('setDetailAccount', { dataAccount: record });
             store.state.loadingDetailAccount = true;
 
@@ -219,22 +246,12 @@ export default defineComponent({
     return {
       columns,
       value,
+      listAccount,
+      numberOfAccount,
       onSearch,
+      onChange,
       customRow,
     };
-  },
-
-  created() {
-    this.$store.dispatch('getListAccount');
-  },
-
-  computed: {
-    listAccount() {
-      return this.$store.state.listAccount;
-    },
-    numberOfAccount() {
-      return this.$store.state.numberOfAccount;
-    },
   },
 });
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <a-layout-header class="header">
+  <a-layout-header>
     <div class="logo">
       <router-link :to="{ name: 'dashboard' }">
         <img src="@/assets/logo.png" />
@@ -23,17 +23,21 @@
           <template #overlay>
             <a-menu>
               <a-menu-item key="my-profile">
-                <a href="/profile"
+                <router-link :to="{ name: 'profile' }"
                   ><span>My Profile</span>
                   <br />
-                  <span style="font-size: 12px">DuyHieu</span>
-                </a>
+                  <span style="font-size: 12px">{{
+                    $store.state.userAccount.fullname
+                  }}</span>
+                </router-link>
               </a-menu-item>
               <a-menu-item key="account">
-                <a href="/">Account Home</a>
+                <router-link :to="{ name: 'dashboard' }"
+                  >Account Home</router-link
+                >
               </a-menu-item>
-              <a-menu-item key="login">
-                <a href="/login">Log out </a>
+              <a-menu-item key="login" @click="handleLogout">
+                <router-link :to="{ name: 'login' }">Log out </router-link>
               </a-menu-item>
             </a-menu>
           </template>
@@ -51,8 +55,12 @@ export default {
     UserOutlined,
     CaretDownOutlined,
   },
-  data() {
-    return {};
+  setup() {
+    const handleLogout = () => {
+      window.localStorage.removeItem('userToken');
+      window.localStorage.removeItem('remember');
+    };
+    return { handleLogout };
   },
 };
 </script>

@@ -8,43 +8,15 @@ const store = createStore({
       modalVisible: false,
       modalAction: '',
       loadingDetailAccount: false,
+      loadingSearch: false,
+      loadingTable: false,
       userAccount: {
         fullname: '',
         role: '',
-        loadingTable: false,
       },
       listAccount: [],
       numberOfAccount: 0,
-      showAddMessage: false,
-      showUpdateMessage: false,
-      showRemoveMessage: false,
-      failedMessage: false,
       detailAccountData: {},
-      requestAddAccount: {
-        id: '',
-        name: '',
-        phone: '',
-        iban: '',
-        pin: '',
-        address: '',
-        balance: '',
-        email: '',
-        date: '',
-      },
-      requestEditAccount: {
-        id: '',
-        name: '',
-        phone: '',
-        iban: '',
-        pin: '',
-        address: '',
-        balance: '',
-        email: '',
-        date: '',
-      },
-      requestRemoveAccount: {
-        id: '',
-      },
     };
   },
   mutations: {
@@ -59,9 +31,6 @@ const store = createStore({
     },
   },
   getters: {
-    activeSideBar(state) {
-      return state.activeSideBar;
-    },
     getMovieByYear: (state) => (inputVal) => {
       return state.listMovie.filter(
         (mov) => mov.release_date.slice(0, 4) == inputVal
@@ -90,19 +59,18 @@ const store = createStore({
       commit('setDetailAccountData', dataAccount);
     },
 
-    async searchAccount(
-      { commit, state },
-      { textInput, pageAccount, showEntries }
-    ) {
+    async searchAccount({ commit, state }, { textInput }) {
       state.loadingTable = true;
+      state.loadingSearch = true;
       const dataAccount = await axios
         .get(
-          `${process.env.VUE_APP_SERVICE_URL}/account/searchaccount?query=${textInput}&page=${pageAccount}&showentries=${showEntries}`
+          `${process.env.VUE_APP_SERVICE_URL}/account/searchaccount1?query=${textInput}`
         )
         .then((accountResponse) => accountResponse.data);
-
+      console.log(dataAccount);
       commit('setListAccount', dataAccount);
       state.loadingTable = false;
+      state.loadingSearch = false;
     },
 
     async getNumberOfAccount({ commit }) {

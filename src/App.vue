@@ -5,37 +5,52 @@
 </template>
 
 <script>
-import { useRoute } from 'vue-router';
-import { computed } from 'vue';
-// import axios from 'axios';
+import { computed, onBeforeMount, h } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import axios from 'axios';
+import { CloseCircleFilled } from '@ant-design/icons-vue';
+import { notification } from 'ant-design-vue';
 
 export default {
   setup() {
-    const router = useRoute();
+    const router = useRouter();
+    const route = useRoute();
+
+    onBeforeMount(() => {
+      if (window.localStorage.getItem('remember') == true) {
+        if (window.localStorage.getItem('userToken') != null) {
+          axios
+            .post(`${process.env.VUE_APP_SERVICE_URL}/auth/keeplogin`, {
+              usertoken: window.localStorage.getItem('userToken'),
+            })
+            .then((response) => {
+              if (response.data == '') {
+                notification.open({
+                  message: 'Failed!',
+                  description: 'Some thing went wrong.',
+                  icon: () =>
+                    h(CloseCircleFilled, {
+                      style: 'color: red',
+                    }),
+                });
+              } else {
+                this.$store.state.userAccount = response.data;
+                this.$router.push({ path: '/' });
+              }
+            })
+            .catch((e) => {
+              if (axios.isCancel(e)) return;
+            });
+        }
+      } else {
+        if (window.localStorage.getItem('userToken') == null) {
+          router.push({ path: '/login' });
+        }
+      }
+    });
     return {
-      layout: computed(() => (router.meta.layout || 'default') + '-layout'),
+      layout: computed(() => (route.meta.layout || 'default') + '-layout'),
     };
-  },
-  created() {
-    // if (window.localStorage.getItem('userToken') == null) {
-    //   this.$router.push('/auth');
-    // } else {
-    //   axios
-    //     .post(`${process.env.VUE_APP_SERVICE_URL}/auth/keeplogin`, {
-    //       usertoken: window.localStorage.getItem('userToken'),
-    //     })
-    //     .then((response) => {
-    //       if (response.data == '') {
-    //         console.log('Failed Sign in');
-    //       } else {
-    //         this.$store.state.userAccount = response.data;
-    //         this.$router.push({ path: '/' });
-    //       }
-    //     })
-    //     .catch((e) => {
-    //       if (axios.isCancel(e)) return;
-    //     });
-    // }
   },
 };
 </script>

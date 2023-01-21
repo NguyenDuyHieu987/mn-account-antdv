@@ -5,6 +5,7 @@
       /* color: var(--text-color); */
       background-color: var(--footer-background-color);
       border-top: 1px solid var(--border-regular);
+      margin-top: auto;
     "
   >
     Ant Design ©2018 Created by Ant UED

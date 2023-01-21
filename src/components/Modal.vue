@@ -46,6 +46,13 @@
         $store.state.loadingDetailAccount == false
       "
     >
+      <a-form-item
+        v-if="$store.state.modalAction == 'add'"
+        label="Id"
+        v-bind="validateInfos.id"
+      >
+        <a-input v-model:value="modelRef.id" />
+      </a-form-item>
       <a-form-item label="Full name" v-bind="validateInfos.name">
         <a-input v-model:value="modelRef.name" />
       </a-form-item>
@@ -92,6 +99,9 @@
         $store.state.loadingDetailAccount == false
       "
     >
+      <a-form-item label="Id">
+        <span>{{ $store.state.detailAccountData.id }} </span>
+      </a-form-item>
       <a-form-item label="Full name">
         <span>{{ $store.state.detailAccountData.name }} </span>
       </a-form-item>
@@ -153,7 +163,7 @@ import {
   watchEffect,
 } from 'vue';
 import { useStore } from 'vuex';
-import { Form } from 'ant-design-vue';
+import { Form, message } from 'ant-design-vue';
 import axios from 'axios';
 const useForm = Form.useForm;
 
@@ -164,7 +174,7 @@ export default defineComponent({
     const loading = ref(false);
 
     // let modelRef = reactive({
-    //   id: '';
+    //   id: '',
     //   name: '',
     //   phone: '',
     //   iban: '',
@@ -181,6 +191,7 @@ export default defineComponent({
 
     watchEffect(() => {
       if (modalAction.value == 'add') {
+        modelRef.value['id'] = '';
         reset();
       }
     });
@@ -225,6 +236,12 @@ export default defineComponent({
     const { resetFields, validate, validateInfos } = useForm(
       modelRef,
       reactive({
+        id: [
+          // {
+          //   required: true,
+          //   message: 'Please input id!',
+          // },
+        ],
         name: [
           {
             required: true,
@@ -265,8 +282,9 @@ export default defineComponent({
             message: 'Please input pin!',
           },
           {
+            pattern: new RegExp(/^.{4}$/),
             message: 'Pin is limited to 4 numbers!',
-            len: 4,
+            // len: 4,
           },
           {
             pattern: new RegExp(/^[0-9]+$/),
@@ -316,6 +334,31 @@ export default defineComponent({
           loading.value = true;
           switch (store.state.modalAction) {
             case 'add':
+              axios
+                .post(
+                  `${process.env.VUE_APP_SERVICE_URL}/account/addaccount`,
+                  toRaw(modelRef).value
+                )
+                .then((response) => {
+                  if (response.data.success) {
+                    setTimeout(() => {
+                      message.success({
+                        content: 'Add account successfully!',
+                        duration: 3,
+                      });
+                    }, 2500);
+                  } else {
+                    setTimeout(() => {
+                      message.error({
+                        content: 'Add account failed!',
+                        duration: 3,
+                      });
+                    }, 2200);
+                  }
+                })
+                .catch((e) => {
+                  if (axios.isCancel(e)) return;
+                });
               break;
             case 'edit':
               axios
@@ -325,9 +368,19 @@ export default defineComponent({
                 )
                 .then((response) => {
                   if (response.data.success) {
-                    console.log('success');
+                    setTimeout(() => {
+                      message.success({
+                        content: 'Update account successfully!',
+                        duration: 3,
+                      });
+                    }, 2500);
                   } else {
-                    console.log('failure');
+                    setTimeout(() => {
+                      message.error({
+                        content: 'Update account failed!',
+                        duration: 3,
+                      });
+                    }, 2200);
                   }
                 })
                 .catch((e) => {
@@ -335,6 +388,31 @@ export default defineComponent({
                 });
               break;
             case 'delete':
+              axios
+                .post(
+                  `${process.env.VUE_APP_SERVICE_URL}/account/removeaccount`,
+                  toRaw(modelRef).value
+                )
+                .then((response) => {
+                  if (response.data.success) {
+                    setTimeout(() => {
+                      message.success({
+                        content: 'Delete account successfully!',
+                        duration: 3,
+                      });
+                    }, 2500);
+                  } else {
+                    setTimeout(() => {
+                      message.error({
+                        content: 'Delete account failed!',
+                        duration: 3,
+                      });
+                    }, 2200);
+                  }
+                })
+                .catch((e) => {
+                  if (axios.isCancel(e)) return;
+                });
               break;
           }
 
@@ -369,16 +447,15 @@ export default defineComponent({
     return {
       formItemLayout,
       loading,
-
       modelRef,
       validateInfos,
       formState,
+      config,
       handleOk,
       handleCancel,
       reset,
       onFinish,
       onFinishFailed,
-      config,
     };
   },
 });

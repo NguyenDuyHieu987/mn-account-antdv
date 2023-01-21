@@ -26,17 +26,34 @@ const routes = [
       layout: 'default',
     },
     component: () =>
-      import(/* webpackChunkName: "setting" */ '../views/AnalyticsView.vue'),
+      import(/* webpackChunkName: "analytics" */ '../views/AnalyticsView.vue'),
   },
-
+  {
+    path: '/profile',
+    name: 'profile',
+    meta: {
+      layout: 'default',
+    },
+    component: () =>
+      import(/* webpackChunkName: "profile" */ '../views/ProfileView.vue'),
+  },
   {
     path: '/login',
     name: 'login',
     meta: {
-      layout: 'login',
+      layout: 'auth',
     },
     component: () =>
       import(/* webpackChunkName: "login" */ '../views/LoginView.vue'),
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    meta: {
+      layout: 'auth',
+    },
+    component: () =>
+      import(/* webpackChunkName: "signup" */ '../views/SignupView.vue'),
   },
 ];
 

@@ -18,11 +18,17 @@
   >
     <a-layout-header class="ant-list-header">
       <div style="display: flex; justify-content: center; align-items: center">
-        <h3 style="color: #fff" v-if="!$store.state.collapsed">DuyHieu</h3>
-        <a-tooltip v-else title="DuyHieu" placement="rightTop">
+        <h3 style="color: #fff" v-if="!$store.state.collapsed">
+          {{ $store.state.userAccount.fullname }}
+        </h3>
+        <a-tooltip
+          v-else
+          :title="$store.state.userAccount.fullname"
+          placement="rightTop"
+        >
           <div class="user-name-container" shape="circle">
             <h4 style="color: #fff">
-              {{ 'DuyHieu'.slice(0, 2).toUpperCase() }}
+              {{ $store.state.userAccount.fullname.slice(0, 2).toUpperCase() }}
             </h4>
           </div>
         </a-tooltip>

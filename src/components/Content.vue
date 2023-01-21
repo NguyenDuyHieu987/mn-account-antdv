@@ -1,5 +1,7 @@
 <template>
-  <a-layout-content>
+  <a-layout-content
+    style="min-height: calc(100vh - 130px); background-color: #fff"
+  >
     <a-breadcrumb
       style="
         padding: 15px 30px;
