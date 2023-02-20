@@ -187,6 +187,15 @@ export default defineComponent({
                     style: 'color: green',
                   }),
               });
+            } else {
+              notification.open({
+                message: 'Failed!',
+                description: 'Something went wrong.',
+                icon: () =>
+                  h(CheckCircleFilled, {
+                    style: 'color: red',
+                  }),
+              });
             }
             reset();
           } else {
